@@ -1,22 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Pokeball from '../pokeball.png';
+import { connect } from 'react-redux';
 
 class Home extends Component {
-	state = {
-		posts: []
-	};
-
-	componentDidMount() {
-		axios.get(' https://jsonplaceholder.typicode.com/posts').then((res) =>
-			this.setState({
-				posts: res.data.slice(0, 10)
-			})
-		);
-	}
 	render() {
-		const { posts } = this.state;
+		// console.log(this.props);
+		const { posts } = this.props;
 		const postList = posts.length ? (
 			posts.map((post) => {
 				return (
@@ -45,4 +35,15 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+// get data from central store
+const mapStateToProps = (state) => {
+	// this object represent different properties we want to add to the props
+	return {
+		posts: state.posts
+	};
+};
+
+// we pass mapStateToProps coz when we connect to redux, it knows
+// what data we want to grab from redux	eg posts, and  properties
+//  that we want to create in our props object to apply that data to
+export default connect(mapStateToProps)(Home);
